@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Converse no Chat!</h1>
+    <div>
+        <p id="campo"></p>
+    </div><br>
+    <input type="text" name="" id="username" placeholder="Digite seu nome aqui"><br>
+    <input type="text" name="" id="msg" placeholder="Digite sua mensagem aqui">
+    <button onclick="enviar()">Enviar</button>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script> 
+<script>
+    // Connecting front end to back end
+    let socket = io('http://localhost:3000/')
+    socket.on('disconnect', () =>{
+        console.log('Desconectado')
+    })
+
+    socket.on('showmsg', (data) =>{
+        let p = document.getElementById('campo')
+        p.innerHTML = data.username + ': ' + data.msg
+        console.log(data)
+    })
+
+    function enviar(){
+        let username = document.getElementById('username').value 
+        let msg = document.getElementById('msg').value 
+
+        socket.emit('msg', {username, msg})
+    }
+</script>
+</html>
