@@ -9,7 +9,7 @@ io.on('connection', (socket) =>{ // it's an event, the socket is the client that
     })
 
     socket.on('msg', (data) =>{
-        socket.emit('showmsg', data)
+        io.emit('showmsg', data)
         console.log(data)
     })
 })

@@ -4,15 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </head>
+
+<style>
+    #chat{
+        max-height: 500px;
+        min-height: 500px;
+        overflow-y: scroll;
+    }
+</style>
 <body>
-    <h1>Converse no Chat!</h1>
-    <div>
-        <p id="campo"></p>
-    </div><br>
-    <input type="text" name="" id="username" placeholder="Digite seu nome aqui"><br>
-    <input type="text" name="" id="msg" placeholder="Digite sua mensagem aqui">
-    <button onclick="enviar()">Enviar</button>
+    <br>
+    <div class="container" >
+        <div class="card">
+            <div class="card-body" style="background-color: aliceblue;">
+                <h1 style="text-align: center;">Converse no Chat!</h1>
+                <div>
+                    <p id="chat"></p>
+                </div><br>
+            </div>
+        
+    <div class="card-footer">
+        <input type="text" name="" id="username" placeholder="Digite seu nome aqui" class="form-control"><br>
+        <input type="text" name="" id="msg" placeholder="Digite sua mensagem aqui" class="form-control"autofocus>
+        <br>
+        <button onclick="enviar()" class="btn btn-primary btn-lg btn-block">Enviar</button>
+    </div>
+
+</div>
+</div>
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script> 
@@ -24,16 +46,19 @@
     })
 
     socket.on('showmsg', (data) =>{
-        let p = document.getElementById('campo')
-        p.innerHTML = data.username + ': ' + data.msg
+        let p = document.getElementById('chat')
+        let row = document.createElement('p')
+        row.innerHTML =  data.username + ': ' + data.msg
+        p.appendChild(row)
         console.log(data)
     })
 
     function enviar(){
         let username = document.getElementById('username').value 
         let msg = document.getElementById('msg').value 
-
         socket.emit('msg', {username, msg})
+        let msgField = document.getElementById('msg')
+        msgField.value = ''
     }
 </script>
 </html>
